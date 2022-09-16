@@ -12,15 +12,15 @@ public class StudentController : ControllerBase
             Student objStudent=new Student();
             string result=objStudent.GetAllStudents();
             return result;
-
-        return "This will return all students.";
         }
-        [HttpGet("id")]
+
+        [HttpGet("{id}")]
         public string GetOneStudent(int id)
         {   Student objStudent=new Student();
             string result=objStudent.GetOneStudent(id);
+            if(result.Length==0)
+            {return "Student not found.";}
             return result;
-            return "This will return a student which id ="+id;
         }
 
         [HttpPost]

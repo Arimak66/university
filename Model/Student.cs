@@ -49,5 +49,9 @@ namespace university.Models
         return result;
 
     }
+    public string AddStudent()
+
+
+
     }
 }

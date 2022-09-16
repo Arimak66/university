@@ -1,0 +1,10 @@
+{
+    "buildpacks": [
+      {
+        "url": "https://github.com/jincod/dotnetcore-buildpack#preview"
+      },
+      
+    
+    ]
+  }
+  

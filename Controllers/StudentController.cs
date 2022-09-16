@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
+using university.Models;
 
-namespace university.Controllers;
 
 [ApiController]
 [Route("[controller]")]
 public class StudentController : ControllerBase
 {
         [HttpGet()]
-        public string GetAllStudents()
+        public string GetStudents()
         {
+            Student objStudent=new Student();
+            string result=objStudent.GetAllStudents();
+            return result;
 
         return "This will return all students.";
         }

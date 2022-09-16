@@ -18,7 +18,7 @@ public class StudentController : ControllerBase
         [HttpGet("id")]
         public string GetOneStudent(int id)
         {   Student objStudent=new Student();
-            string result=objStudent.GetOneStudent();
+            string result=objStudent.GetOneStudent(id);
             return result;
             return "This will return a student which id ="+id;
         }

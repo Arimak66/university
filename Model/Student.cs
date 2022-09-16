@@ -40,7 +40,10 @@ namespace university.Models
 
         foreach(Student stu in studentsCollection)
         {
+            if(stu.Id==id)
+            {
             result+=stu.Id+" "+stu.Fname+" "+stu.Lname+"\n";
+            }
         }
 
         return result;

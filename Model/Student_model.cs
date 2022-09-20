@@ -9,8 +9,8 @@ namespace university
     public class Student
     {
         public int idstudent { get; set; }
-        public string start_date { get; set; }
-        public string graduate_date { get; set; }
+        public DateTime start_date { get; set; }
+        public DateTime graduate_date { get; set; }
 
         internal Database Db { get; set; }
 
@@ -111,8 +111,8 @@ namespace university
                     var post = new Student(Db)
                     {
                         idstudent = reader.GetInt32(0),
-                        start_date = reader.GetString(1),
-                        graduate_date = reader.GetString(2),
+                        start_date = reader.GetDateTime(1),
+                        graduate_date = reader.GetDateTime(2),
 
                     };
                     posts.Add(post);
@@ -136,13 +136,13 @@ namespace university
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@start_date",
-                DbType = DbType.String,
+                DbType = DbType.DateTime,
                 Value = start_date,
             });
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@graduate_date",
-                DbType = DbType.String,
+                DbType = DbType.DateTime,
                 Value = graduate_date,
             });
         

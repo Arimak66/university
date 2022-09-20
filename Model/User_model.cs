@@ -44,7 +44,18 @@ namespace university
                 Value = iduser,
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
-            return result.Count > 0 ? result[0] : null;
+            //Console.WriteLine(result.FirstOrDefault);
+            //return result.Count > 0 ? result[0] : null;
+            if(result.Count>0)
+            {
+                return result[0];
+            }
+            else
+                {
+                    return null;
+                }
+
+            }
         }
 
 

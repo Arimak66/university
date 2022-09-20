@@ -1,7 +1,7 @@
 using System;
 using MySqlConnector;
 
-namespace MyApi
+namespace university
 {
     public class Database : IDisposable
     {

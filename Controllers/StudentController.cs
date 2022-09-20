@@ -1,51 +1,83 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using university.Models;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
-
-[ApiController]
-[Route("[controller]")]
-public class StudentController : ControllerBase
+namespace university.Controllers
 {
-        [HttpGet()]
-        public string GetStudents()
+    [Route("api/[controller]")]
+    public class StudentController : ControllerBase
+    {
+        public StudentController(Database db)
         {
-            Student objStudent=new Student();
-            string result=objStudent.GetAllStudents();
-            return result;
+            Db = db;
         }
 
+        // GET api/User
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.GetAllAsync();
+            Console.WriteLine("Test");
+            return new OkObjectResult(result);
+        }
+
+        // GET api/User/5
         [HttpGet("{id}")]
-        public IActionResult GetOneStudent(int id)
-        {   Student objStudent=new Student();
-            string result=objStudent.GetOneStudent(id);
-            if(result.Length==0)
-            {result= "Student not found.";
-            return NotFound(result);
-            }
-            return Ok(result);
+        public async Task<IActionResult> GetOne(int id)
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            return new OkObjectResult(result);
         }
 
+        // POST api/User
         [HttpPost]
-
-        public string AddStudent()
+        public async Task<IActionResult> Post([FromBody]Student body)
         {
-            return "This will add a new student";
+            await Db.Connection.OpenAsync();
+            //body.password = BCrypt.Net.BCrypt.HashPassword(body.password);
+            body.Db = Db;
+            int result=await body.InsertAsync();
+            Console.WriteLine("inserted id="+result);
+            return new OkObjectResult(result);
         }
+
+        // PUT api/User/5
         [HttpPut("{id}")]
-        
-        public string UpdateStudent(int id)
+        public async Task<IActionResult> PutOne(int id, [FromBody]Student body)
         {
-            return "This will update a student which id: "+id;
+            await Db.Connection.OpenAsync();
+            var query = new User(Db);
+            //body.password = BCrypt.Net.BCrypt.HashPassword(body.password);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            //result.username = body.username;
+           // result.password = body.password;
+            await result.UpdateAsync();
+            return new OkObjectResult(result);
         }
 
-        [HttpDelete]
-
-        public string DeleteStudent(int id)
-
+        // DELETE api/User/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOne(int id)
         {
-            return "Student this will delete a student which id: "+id;
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            await result.DeleteAsync();
+            return new OkObjectResult(result);
         }
 
 
+        public Database Db { get; }
     }
-    
+}

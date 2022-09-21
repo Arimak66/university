@@ -30,6 +30,8 @@ namespace university
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM  user ;";
+            var result=await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+           // Console.WriteLine(result);
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -44,18 +46,14 @@ namespace university
                 Value = iduser,
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
-            //Console.WriteLine(result.FirstOrDefault);
-            //return result.Count > 0 ? result[0] : null;
-            if(result.Count>0)
-            {
+            //Console.WriteLine(result.Count);
+            if(result.Count > 0){
                 return result[0];
             }
-            else
-                {
-                    return null;
-                }
-
+            else {
+                return null;
             }
+            //return result.Count > 0 ? result[0] : null;
         }
 
 
@@ -72,14 +70,14 @@ namespace university
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO  user  (iduser,username,password,identity,firstname,lastname) VALUES (@iduser,@username,@password,@identity,@firstname,@lastname);";
+            cmd.CommandText=@"insert into user(username,password,identity,firstname,lastname) 
+            values(@username,@password,@identity,@firstname,@lastname);";
             BindParams(cmd);
-            BindId(cmd);
             try
             {
                 await cmd.ExecuteNonQueryAsync();
-                int lastInsertId= (int) cmd.LastInsertedId;
-                return lastInsertId; 
+                int lastInsertId = (int) cmd.LastInsertedId; 
+                return lastInsertId;
             }
             catch (System.Exception)
             {   
@@ -171,5 +169,3 @@ namespace university
         }
     }
 }
-
-

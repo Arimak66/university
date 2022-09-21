@@ -4,70 +4,70 @@ using Microsoft.AspNetCore.Mvc;
 namespace university.Controllers
 {
     [Route("api/[controller]")]
-    public class TeacherController : ControllerBase
+    public class GradeController : ControllerBase
     {
-        public TeacherController(Database db)
+        public GradeController(Database db)
         {
             Db = db;
         }
 
-        // GET api/Teacher
+        // GET api/grade
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             await Db.Connection.OpenAsync();
-            var query = new Teacher(Db);
+            var query = new Grade(Db);
             var result = await query.GetAllAsync();
             return new OkObjectResult(result);
         }
 
-        // GET api/Teacher/5
+        // GET api/grade/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
             await Db.Connection.OpenAsync();
-            var query = new Teacher(Db);
+            var query = new Grade(Db);
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
             return new OkObjectResult(result);
         }
 
-        // POST api/Teacher
+        // POST api/grade
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Teacher body)
+        public async Task<IActionResult> Post([FromBody]Grade body)
         {
             await Db.Connection.OpenAsync();
             body.Db = Db;
             int result=await body.InsertAsync();
-            Console.WriteLine("inserted id="+result);
-            if(result == 0){
-                return new ConflictObjectResult(0);
-            }
+            Console.WriteLine(body.date);
             return new OkObjectResult(result);
         }
 
-        // PUT api/Teacher/5
+        // PUT api/grade/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOne(int id, [FromBody]Teacher body)
+        public async Task<IActionResult> PutOne(int id, [FromBody]Grade body)
         {
             await Db.Connection.OpenAsync();
-            var query = new Teacher(Db);
+            var query = new Grade(Db);
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
-            result.iddepartment = body.iddepartment;
+            result.date = body.date;
+            result.idstudent = body.idstudent;
+            result.idteacher = body.idteacher;
+            result.idcourse=body.idcourse;
+            result.grade=body.grade;
             await result.UpdateAsync();
             return new OkObjectResult(result);
         }
-        
 
-        // DELETE api/Teacher/5
+        // DELETE api/grade/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOne(int id)
         {
             await Db.Connection.OpenAsync();
-            var query = new Teacher(Db);
+            var query = new Grade(Db);
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();

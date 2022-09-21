@@ -1,86 +1,79 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace university.Controllers
 {
     [Route("api/[controller]")]
-    public class AdministratorController : ControllerBase
+    public class GradeController : ControllerBase
     {
-        public AdministratorController(Database db)
+        public GradeController(Database db)
         {
             Db = db;
         }
 
-        // GET api/Administrator
+        // GET api/grade
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             await Db.Connection.OpenAsync();
-            var query = new Administrator(Db);
+            var query = new Grade(Db);
             var result = await query.GetAllAsync();
-            Console.WriteLine("Test");
             return new OkObjectResult(result);
         }
 
-        // GET api/Administrator/5
+        // GET api/grade/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
             await Db.Connection.OpenAsync();
-            var query = new Administrator(Db);
+            var query = new Grade(Db);
             var result = await query.FindOneAsync(id);
-            Console.WriteLine(result);
             if (result is null)
                 return new NotFoundResult();
             return new OkObjectResult(result);
-            
         }
 
-        // POST api/Administrator
+        // POST api/grade
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Administrator body)
+        public async Task<IActionResult> Post([FromBody]Grade body)
         {
             await Db.Connection.OpenAsync();
             body.Db = Db;
             int result=await body.InsertAsync();
-            Console.WriteLine("Test Post");
-            Console.WriteLine("inserted id="+result);
-            if(result == 0){
-                return new ConflictObjectResult(0);
-            }
+            Console.WriteLine(body.date);
             return new OkObjectResult(result);
         }
 
-        // PUT api/Administrator/5
+        // PUT api/grade/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOne(int id, [FromBody]Administrator body)
+        public async Task<IActionResult> PutOne(int id, [FromBody]Grade body)
         {
             await Db.Connection.OpenAsync();
-            var query = new Administrator(Db);
+            var query = new Grade(Db);
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
-            result.idadministrator = body.idadministrator;
-            result.category = body.category;
+            result.date = body.date;
+            result.idstudent = body.idstudent;
+            result.idteacher = body.idteacher;
+            result.idcourse=body.idcourse;
+            result.grade=body.grade;
             await result.UpdateAsync();
             return new OkObjectResult(result);
         }
 
-        // DELETE api/Administrator/5
+        // DELETE api/grade/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOne(int id)
         {
             await Db.Connection.OpenAsync();
-            var query = new Administrator(Db);
+            var query = new Grade(Db);
             var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
             await result.DeleteAsync();
             return new OkObjectResult(result);
         }
-
 
         public Database Db { get; }
     }

@@ -27,6 +27,8 @@ namespace university
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM  student ;";
+            var result=await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+           // Console.WriteLine(result);
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -41,26 +43,22 @@ namespace university
                 Value = idstudent,
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
-            //Console.WriteLine(result.FirstOrDefault);
-            //return result.Count > 0 ? result[0] : null;
-            if(result.Count>0)
-            {
+            Console.WriteLine(result.Count);
+            if(result.Count > 0){
                 return result[0];
             }
-            else
-                {
-                    return null;
-                }
-
+            else {
+                return null;
             }
-        
+            //return result.Count > 0 ? result[0] : null;
+        }
 
 
         public async Task DeleteAllAsync()
         {
             using var txn = await Db.Connection.BeginTransactionAsync();
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM student ";
+            cmd.CommandText = @"DELETE FROM  student ";
             await cmd.ExecuteNonQueryAsync();
             await txn.CommitAsync();
         }
@@ -69,14 +67,14 @@ namespace university
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO  student  (idstudent, start_date_,graduate_date) VALUES (@idstudent,@start_date,@graduate_date);";
+            cmd.CommandText=@"insert into student(idstudent,start_date,graduate_date) 
+            values(@idstudent,@start_date,@graduate_date);";
             BindParams(cmd);
             BindId(cmd);
             try
             {
-                await cmd.ExecuteNonQueryAsync();
-                int lastInsertId= (int) cmd.LastInsertedId;
-                return lastInsertId; 
+                int affectedRows=await cmd.ExecuteNonQueryAsync();
+                return affectedRows;
             }
             catch (System.Exception)
             {   
@@ -87,7 +85,7 @@ namespace university
         public async Task UpdateAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE  student  SET  idstudent  = @idstudent,  start_date  = @start_date, graduate_date = @graduate_date WHERE  idstudent  = @idstudent;";
+            cmd.CommandText = @"UPDATE  student  SET  idstudent = @idstudent, start_date = @start_date, graduate_date = @graduate_date WHERE  idstudent  = @idstudent;";
             BindParams(cmd);
             BindId(cmd);
             await cmd.ExecuteNonQueryAsync();
@@ -96,7 +94,7 @@ namespace university
         public async Task DeleteAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM  user  WHERE  idstudent  = @idstudent;";
+            cmd.CommandText = @"DELETE FROM  student  WHERE  idstudent  = @idstudent;";
             BindId(cmd);
             await cmd.ExecuteNonQueryAsync();
         }
@@ -112,25 +110,23 @@ namespace university
                     {
                         idstudent = reader.GetInt32(0),
                         start_date = reader.GetDateTime(1),
-                        graduate_date = reader.GetDateTime(2),
-
+                        graduate_date = reader.GetDateTime(2)
                     };
                     posts.Add(post);
                 }
             }
             return posts;
         }
-        
-        private void BindId(MySqlCommand cmd)
+
+         private void BindId(MySqlCommand cmd)
         {
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@idstudent",
-                DbType = DbType.Int32,
+                DbType = DbType.String,
                 Value = idstudent,
             });
         }
-
         private void BindParams(MySqlCommand cmd)
         {
             cmd.Parameters.Add(new MySqlParameter
@@ -145,8 +141,6 @@ namespace university
                 DbType = DbType.DateTime,
                 Value = graduate_date,
             });
-        
         }
     }
 }
-    

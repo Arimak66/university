@@ -57,9 +57,7 @@ namespace university.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOne(int id, [FromBody]Administrator body)
         {
-            Console.WriteLine("actual id="+id);
-            Console.WriteLine("new id="+body.idadministrator);
-            Console.WriteLine("new category="+body.category);
+
             await Db.Connection.OpenAsync();
             var query = new Administrator(Db);
             var result = await query.FindOneAsync(id);

@@ -94,8 +94,9 @@ namespace university
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"UPDATE  administrator  SET  idadministrator = @idadministrator,  category = @category WHERE  idadministrator  = @idadministrator;";
-            BindParams(cmd);
             BindId(cmd);
+            BindParams(cmd);
+
             
             await cmd.ExecuteNonQueryAsync();
         }

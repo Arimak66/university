@@ -70,8 +70,7 @@ namespace university
             values(@idadministrator,@category);";
             BindParams(cmd);
             BindId(cmd);
-            Console.WriteLine("InsertAsync");
-            Console.WriteLine(cmd.CommandText); //Debug
+
             try
             {
                 await cmd.ExecuteNonQueryAsync(); 

@@ -45,9 +45,7 @@ namespace university.Controllers
             await Db.Connection.OpenAsync();
             body.Db = Db;
             int result=await body.InsertAsync();
-            Console.WriteLine(body.idstudent);
-            Console.WriteLine(body.start_date);
-            Console.WriteLine(body.graduate_date);
+
             if(result == 0){
                 return new ConflictObjectResult(0);
             }

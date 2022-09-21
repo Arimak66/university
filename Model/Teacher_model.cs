@@ -63,8 +63,9 @@ namespace university
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"UPDATE  teacher  SET  iddepartment  = @iddepartment;";
-            BindParams(cmd);
             BindId(cmd);
+            BindParams(cmd);
+
             await cmd.ExecuteNonQueryAsync();
         }
 

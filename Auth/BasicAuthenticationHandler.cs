@@ -41,8 +41,10 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         var authUsername = authSplit[0];
         var authPassword = authSplit.Length > 1 ? authSplit[1] : throw new Exception("Unable to get password");
 
-        
-        Database db = new Database(System.Environment.GetEnvironmentVariable("DATABASE_URL"));
+        string myConnectionString;
+        myConnectionString = "server=192.168.1.112;uid=amakkonen;pwd=Eirene1234!;database=university";
+
+        Database db = new Database(myConnectionString);
 
         Login login = new Login(db);
         db.Connection.Open();

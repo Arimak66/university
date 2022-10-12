@@ -50,14 +50,14 @@ app.MapControllers();
 
 //setting the connection string for development environment
 
-if (app.Environment.IsDevelopment()){
-app.Use(async (contex, next)=>
-{
-    MyEnvironment.SetMySQLConnention();
-    await next();
-}
-);
-} 
+//if (app.Environment.IsDevelopment()){
+//app.Use(async (contex, next)=>
+//{
+//    MyEnvironment.SetMySQLConnention();
+//    await next();
+//}
+//);
+//} 
 
 
 app.Run();

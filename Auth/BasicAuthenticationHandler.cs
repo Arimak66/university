@@ -4,6 +4,7 @@ using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Security.Claims;
+using MySqlConnector;
 
 namespace university;
 public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
@@ -41,10 +42,12 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         var authUsername = authSplit[0];
         var authPassword = authSplit.Length > 1 ? authSplit[1] : throw new Exception("Unable to get password");
 
-        string myConnectionString;
-        myConnectionString = "server=192.168.1.112;uid=amakkonen;pwd=Eirene1234!;database=university";
+        //string myConnectionString;
+        //myConnectionString = new MySqlConnection(System.Environment.GetEnvironmentVariable("DATABASE_URL"));
+        //myConnectionString = "server=192.168.1.112;uid=amakkonen;pwd=Eirene1234!;database=university";
 
-        Database db = new Database(myConnectionString);
+        //Database db = new Database(myConnectionString);
+        Database db = new Database(System.Environment.GetEnvironmentVariable("DATABASE_URL"));
 
         Login login = new Login(db);
         db.Connection.Open();

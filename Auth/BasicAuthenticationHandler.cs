@@ -47,7 +47,7 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         //myConnectionString = "server=192.168.1.112;uid=amakkonen;pwd=Eirene1234!;database=university";
 
         //Database db = new Database(myConnectionString);
-        Database db = new Database(System.Environment.GetEnvironmentVariable("DATABASE_WHITE_URL"));
+        Database db = new Database(System.Environment.GetEnvironmentVariable("CLEARDB_WHITE_URL"));
 
         Login login = new Login(db);
         db.Connection.Open();

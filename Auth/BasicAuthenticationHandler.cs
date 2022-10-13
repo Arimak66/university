@@ -41,10 +41,9 @@ public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSc
         var authUsername = authSplit[0];
         var authPassword = authSplit.Length > 1 ? authSplit[1] : throw new Exception("Unable to get password");
 
-        string myConnectionString;
-        myConnectionString = "server=u-cdbr-west-03.cleardb.net;uid=7b33948994798;pwd=001c5211;database=heroku_666f9644cc1b28b?";
+        Database db = new Database(System.Environment.GetEnvironmentVariable("DATABASE_URL"));
 
-        Database db = new Database(myConnectionString);
+
 
         Login login = new Login(db);
         db.Connection.Open();
